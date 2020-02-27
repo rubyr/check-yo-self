@@ -9,8 +9,7 @@ class Task {
     if (options.completed !== undefined)
       this.completed = options.completed;
   }
-
-  markAsComplete() {
-    this.completed = true;
-  }
 }
+
+if (typeof exports == "object")
+  module.exports = Task;
