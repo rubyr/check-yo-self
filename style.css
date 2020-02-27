@@ -71,6 +71,7 @@ aside button {
   width: 100%;
   height: auto;
   columns: 250px;
+  padding: 20px;
 }
 
 .list {
@@ -87,17 +88,17 @@ aside button {
 }
 
 .list img {
-  width: 16px;
+  width: 20px;
   margin-right: 10px;
-}
-
-.list-items {
-
 }
 
 .list-items img {
   float: left;
-  padding-top: 3px;
+  padding: 3px 0 0 3px;
+}
+
+.list-individual-item {
+  margin: 15px 0;
 }
 
 .list-individual-item img:hover {
