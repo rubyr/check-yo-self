@@ -89,12 +89,12 @@ aside button {
 
 .list img {
   width: 20px;
-  margin-right: 10px;
 }
 
 .list-items img {
   float: left;
   padding: 3px 0 0 3px;
+  margin-right: 10px;
 }
 
 .list-individual-item {
@@ -111,6 +111,14 @@ aside button {
   overflow: auto;
   text-transform: uppercase;
   font-size: 10px;
+}
+
+.list-actions>* {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
 }
 
 .list-action-urgent {
@@ -132,6 +140,10 @@ aside button {
 
 .list-urgent .list-action-urgent {
   color: #b23a25;
+}
+
+.list-urgent .list-action-urgent img {
+  content: url("assets/urgent-active.svg")
 }
 
 @media all and (min-width: 600px) {
