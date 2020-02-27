@@ -6,24 +6,22 @@ class ToDoList {
     this.urgent = false;
   }
 
-  getLists() {
+  static getLists() {
     var lists = localStorage.getItem("lists");
     if (lists === null) {
       lists = "{}";
     }
-    return lists;
+    return JSON.parse(lists);
   }
 
   saveToStorage() {
     var lists = this.getLists();
-    lists = JSON.parse(lists);
     lists[`${this.id}`] = this;
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
   deleteFromStorage() {
     var lists = this.getLists();
-    lists = JSON.parse(lists);
     delete lists[`${this.id}`];
     localStorage.setItem("lists", JSON.stringify(lists));
   }

@@ -5,8 +5,6 @@
   box-sizing: border-box;
 }
 
-
-
 h1 {
   background-color: #1f1f3d;
   color: #fff;
@@ -41,20 +39,25 @@ aside * {
   line-height: 36px;
   font-size: 16px;
 }
+
 aside input {
   margin-top: 0;
+  border: 2px solid #1f1f3d;
+  border-radius: 2px;
+  color: black;
+  padding-left: 5px;
+  text-transform: none;
 }
 
-aside section {
+aside .new-list-task input {
+  flex-grow: 1;
+}
+
+aside section:not(.new-list-task) {
   border-top: 2px solid #486a7a;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-aside *::after {
-  content: "\A";
-  white-space: pre;
 }
 
 aside button {
@@ -62,8 +65,20 @@ aside button {
   border: none;
 }
 
+aside button.add-task {
+  width: 15%;
+  font-size: 48px;
+  margin-top: 0;
+}
+
 .yellow-text {
   color: #ffc30c;
+}
+
+.new-list-task {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .lists {
@@ -101,7 +116,11 @@ aside button {
   margin: 15px 0;
 }
 
-.list-individual-item img:hover {
+.list-individual-item * {
+  pointer-events: none;
+}
+
+.list-individual-item:hover img {
   content: url(assets/checkbox-active.svg);
 }
 
@@ -111,6 +130,7 @@ aside button {
   overflow: auto;
   text-transform: uppercase;
   font-size: 10px;
+  cursor: pointer;
 }
 
 .list-actions>* {
@@ -119,6 +139,10 @@ aside button {
   align-items: center;
   justify-content: space-between;
   height: 40px;
+}
+
+.list-actions>*>* {
+  pointer-events: none;
 }
 
 .list-action-urgent {

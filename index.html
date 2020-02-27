@@ -15,9 +15,12 @@
     <aside>
       <section>
         <label for="title">Task Title</label>
-        <input type="text" name="title">
+        <input type="text" name="title" id="list-title-input">
         <label for="item-1">Task Item</label>
-        <input type="text" name="item-1">
+        <section class="new-list-task">
+          <input type="text" name="item-1">
+          <button class="add-task">+</button>
+        </section>
         <button>make task list</button>
         <button>clear all</button>
       </section>
@@ -26,65 +29,7 @@
       </section>
     </aside>
     <section class="lists"> <!-- TODO: find a better name for this class -->
-      <!-- Nothing here. Add a task! -->
-      <section class="list list-urgent">
-        <section class="list-title">
-          <h3>Task Title</h3>
-        </section>
-        <section class="list-items">
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Don't ever play yourself.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Every chance I get, I water the plants.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Lion! Cloth talk.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>You smart. You beautiful. You amazing.</p>
-          </div>
-        </section>
-        <section class="list-actions">
-          <div class="list-action-urgent">
-            <img src="assets/urgent.svg" alt="Urgent"> 
-            <p>urgent</p>
-          </div>
-          <div class="list-action-delete">
-            <img src="assets/delete.svg" alt="Delete"> 
-            <p>delete</p>
-          </div>
-        </section>
-      </section>
-      <section class="list">
-        <section class="list-title">
-          <h3>Task Title</h3>
-        </section>
-        <section class="list-items">
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Don't ever play yourself.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Every chance I get, I water the plants.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>Lion! Cloth talk.</p>
-          </div>
-          <div class="list-individual-item">
-            <img src="assets/checkbox.svg" alt="Check off item"> <p>You smart. You beautiful. You amazing.</p>
-          </div>
-        </section>
-        <section class="list-actions">
-          <div class="list-action-urgent align-content-vertical">
-            <img src="assets/urgent.svg" alt="Urgent"> 
-            <p>urgent</p>
-          </div>
-          <div class="list-action-delete align-content-vertical">
-            <img src="assets/delete.svg" alt="Delete"> 
-            <p>delete</p>
-          </div>
-        </section>
-      </section>
+      Nothing here. Add a task!
     </section>
   </main>
   <script src="task.js"></script>
