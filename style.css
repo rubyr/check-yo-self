@@ -81,9 +81,6 @@ aside button.add-task {
   outline: none;
 }
 
-.form div {
-}
-
 .form div * {
   text-transform: none;
   line-height: normal;

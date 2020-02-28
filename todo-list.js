@@ -4,21 +4,22 @@ class ToDoList {
     this.title = title;
     this.tasks = tasks;
     this.urgent = false;
+    this.allTasksDone = false;
   }
 
   static getListById(listId) {
     var listObj = ToDoList.getLists()[listId];
-    return ToDoList.parseObject(listObj);
+    if (listObj != undefined)
+      return ToDoList.parseObject(listObj);
   }
 
   static parseObject(toDoObject) {
     var newList = new ToDoList(toDoObject.title, toDoObject.tasks);
+    newList = Object.assign(newList, toDoObject);
     newList.tasks.forEach((task, i) => {
-      newList.tasks[i] = new Task(task.content);
-      newList.tasks[i].completed = task.completed;
+      newList.tasks[i] = new Task();
+      newList.tasks[i] = Object.assign(newList.tasks[i], task);
     });
-    newList.id = toDoObject.id;
-    newList.urgent = toDoObject.urgent;
     return newList;
   }
 
@@ -53,6 +54,7 @@ class ToDoList {
 
   updateTask(taskNum, options) {
     this.tasks[taskNum].update(options);
+    this.allTasksDone = this.tasks.every(task => task.completed);
     this.saveToStorage();
   }
 }
