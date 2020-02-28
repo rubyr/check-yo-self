@@ -6,36 +6,54 @@ class ToDoList {
     this.urgent = false;
   }
 
-  getLists() {
+  static getListById(listId) {
+    var listObj = ToDoList.getLists()[listId];
+    return ToDoList.parseObject(listObj);
+  }
+
+  static parseObject(toDoObject) {
+    var newList = new ToDoList(toDoObject.title, toDoObject.tasks);
+    newList.tasks.forEach((task, i) => {
+      newList.tasks[i] = new Task(task.content);
+      newList.tasks[i].completed = task.completed;
+    });
+    newList.id = toDoObject.id;
+    newList.urgent = toDoObject.urgent;
+    return newList;
+  }
+
+  static getLists() {
     var lists = localStorage.getItem("lists");
     if (lists === null) {
       lists = "{}";
     }
-    return lists;
+    return JSON.parse(lists);
   }
 
   saveToStorage() {
-    var lists = this.getLists();
-    lists = JSON.parse(lists);
+    var lists = ToDoList.getLists();
     lists[`${this.id}`] = this;
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
   deleteFromStorage() {
-    var lists = this.getLists();
-    lists = JSON.parse(lists);
+    var lists = ToDoList.getLists();
     delete lists[`${this.id}`];
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
   updateToDo(options) {
     this.title = options.title || this.title;
-    if (options.urgent !== undefined)
+    if (typeof options.urgent == "boolean")
       this.urgent = options.urgent;
+    if (options.urgent == "toggle")
+      this.urgent = !this.urgent;
+    this.saveToStorage();
   }
 
   updateTask(taskNum, options) {
     this.tasks[taskNum].update(options);
+    this.saveToStorage();
   }
 }
 

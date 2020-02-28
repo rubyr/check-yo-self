@@ -5,8 +5,6 @@
   box-sizing: border-box;
 }
 
-
-
 h1 {
   background-color: #1f1f3d;
   color: #fff;
@@ -19,8 +17,9 @@ h1 {
 }
 
 main {
-  /* columns: 3; */
-  height: calc(100vh - 60px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 aside {
@@ -31,6 +30,7 @@ aside {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 10px;
 }
 
 aside * {
@@ -41,20 +41,25 @@ aside * {
   line-height: 36px;
   font-size: 16px;
 }
+
 aside input {
   margin-top: 0;
+  border: 2px solid #1f1f3d;
+  border-radius: 2px;
+  color: black;
+  padding-left: 5px;
+  text-transform: none;
 }
 
-aside section {
+aside .new-list-task input {
+  flex-grow: 1;
+}
+
+aside section:not(.new-list-task) {
   border-top: 2px solid #486a7a;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-aside *::after {
-  content: "\A";
-  white-space: pre;
 }
 
 aside button {
@@ -62,8 +67,38 @@ aside button {
   border: none;
 }
 
+aside button.add-task {
+  width: 15%;
+  font-size: 48px;
+  margin-top: 0;
+}
+
 .yellow-text {
   color: #ffc30c;
+}
+
+.form * {
+  outline: none;
+}
+
+.form div {
+}
+
+.form div * {
+  text-transform: none;
+  line-height: normal;
+}
+
+.form img {
+  width: 20px;
+  float: left;
+  margin: 12px 15px 0 0;
+}
+
+.new-list-task {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .lists {
@@ -101,7 +136,20 @@ aside button {
   margin: 15px 0;
 }
 
-.list-individual-item img:hover {
+.list-individual-item * {
+  pointer-events: none;
+}
+
+/* .list-individual-item:hover img {
+  content: url(assets/checkbox-active.svg);
+} */
+
+.list-individual-item.checked {
+  color: #3C6577;
+  font-style: italic;
+}
+
+.list-individual-item.checked img {
   content: url(assets/checkbox-active.svg);
 }
 
@@ -119,6 +167,11 @@ aside button {
   align-items: center;
   justify-content: space-between;
   height: 40px;
+  cursor: pointer;
+}
+
+.list-actions>*>* {
+  pointer-events: none;
 }
 
 .list-action-urgent {
@@ -127,6 +180,10 @@ aside button {
 
 .list-action-delete {
   float: right;
+}
+
+.list-action-delete:hover img {
+  content: url(assets/delete-active.svg);
 }
 
 .list-urgent {
@@ -147,13 +204,17 @@ aside button {
 }
 
 @media all and (min-width: 600px) {
+  main {
+    min-height: calc(100vh - 60px);
+    flex-direction: row;
+  }
   aside {
     width: 300px;
-    height: calc(100vh - 60px);
+    min-height: 100%;
+    flex: 1 0 300px;
   }
   .lists {
-    width: calc(100vw - 300px);
-    height: calc(100vh - 60px);
-    margin-left: 300px;
+    flex: 2 0 calc(100% - 300px);
+    /* height: calc(100vh - 60px); */
   }
 }

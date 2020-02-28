@@ -6,8 +6,10 @@ class Task {
 
   update(options) {
     this.content = options.content || this.content;
-    if (options.completed !== undefined)
+    if (typeof options.completed == "boolean")
       this.completed = options.completed;
+    if (options.completed == "toggle")
+      this.completed = !this.completed;
   }
 }
 
