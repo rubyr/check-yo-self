@@ -6,12 +6,12 @@ class Task {
 
   update(options) {
     this.content = options.content || this.content;
-    if (typeof options.completed == "boolean")
+    if (typeof options.completed === "boolean")
       this.completed = options.completed;
-    if (options.completed == "toggle")
+    if (options.completed === "toggle")
       this.completed = !this.completed;
   }
 }
 
-if (typeof exports == "object")
+if (typeof exports === "object")
   module.exports = Task;

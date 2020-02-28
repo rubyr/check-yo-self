@@ -77,13 +77,13 @@ function deleteList(list) {
   }
   listObj.deleteFromStorage();
   listHolder.removeChild(list);
-  if (listHolder.childElementCount == 0) {
+  if (listHolder.childElementCount === 0) {
     listHolder.innerHTML = "Nothing here. Add a task!";
   }
 }
 
 aside.addEventListener('click', function() {
-  if (event.target == form.addTask && form.taskInput.value != "") {
+  if (event.target === form.addTask && form.taskInput.value != "") {
     form.taskList.innerHTML += 
     `<div>
       <img src="assets/delete.svg" alt="Delete Item" class="delete-task">
@@ -97,7 +97,7 @@ aside.addEventListener('click', function() {
     form.tasks.splice(form.tasks.indexOf(task), 1);
     event.target.closest("#new-task-holder").removeChild(event.target.parentNode);
   }
-  if (event.target == form.submit) {
+  if (event.target === form.submit) {
     var titleFilled = !!form.title.value;
     var tasksFilled = !!form.tasks.length;
     
@@ -113,7 +113,7 @@ aside.addEventListener('click', function() {
       clearForm();
     }
   }
-  if (event.target == form.clear) {
+  if (event.target === form.clear) {
     clearForm();
   }
 });
