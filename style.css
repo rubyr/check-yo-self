@@ -75,6 +75,24 @@ aside button.add-task {
   color: #ffc30c;
 }
 
+.form * {
+  outline: none;
+}
+
+.form div {
+}
+
+.form div * {
+  text-transform: none;
+  line-height: normal;
+}
+
+.form img {
+  width: 20px;
+  float: left;
+  margin: 12px 15px 0 0;
+}
+
 .new-list-task {
   height: 36px;
   display: flex;

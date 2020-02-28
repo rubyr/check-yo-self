@@ -13,17 +13,17 @@
   </header>
   <main>
     <aside>
-      <section>
+      <section class="form">
         <label for="title">Task Title</label>
         <input type="text" name="title" id="list-title-input">
-        <section class="new-task-holder"></section>
+        <section id="new-task-holder"></section>
         <label for="new-item">Task Item</label>
         <section class="new-list-task">
-          <input type="text" name="new-item">
+          <input type="text" name="new-item" id="task-input">
           <button class="add-task">+</button>
         </section>
-        <button>make task list</button>
-        <button>clear all</button>
+        <button id="submit-new-list">make task list</button>
+        <button id="clear-new-list">clear all</button>
       </section>
       <section>
         <button>filter by urgency</button>

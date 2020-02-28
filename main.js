@@ -1,4 +1,15 @@
-var listHolder = document.querySelector(".lists");
+const $ = document.querySelector.bind(document);
+var aside = $("aside");
+var form = {
+  title:     $("#list-title-input"),
+  taskList:  $("#new-task-holder"),
+  taskInput: $("#task-input"),
+  addTask:   $(".add-task"),
+  submit:    $("#submit-new-list"),
+  clear:     $("#clear-new-list"),
+  tasks:     []
+};
+var listHolder = $(".lists");
 
 function createCard(list) { 
   var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}">
@@ -41,13 +52,56 @@ function displayList(list) {
 // var list1 = new ToDoList("Get ripped", [new Task("Talk to jeff"), new Task("talk to Steve")]);
 // list1.saveToStorage();
 
+function markUrgent(list) {
+  list.classList.toggle("list-urgent");
+  var listObj = ToDoList.getListById(list.dataset.listId);
+  listObj.updateToDo({urgent: !listObj.urgent});
+  listObj.saveToStorage();
+}
+
+function clearForm() {
+  form.taskList.innerHTML = "";
+  form.title.value = "";
+  form.taskInput.value = "";
+  form.tasks = [];
+}
+
+aside.addEventListener('click', function() {
+  if (event.target == form.addTask && form.taskInput.value != "") {
+    form.taskList.innerHTML += 
+    `<div>
+      <img src="assets/delete.svg" alt="Delete Item" class="delete-task">
+      <p>${form.taskInput.value}</p>
+    </div>`;
+    form.tasks.push(form.taskInput.value);
+    form.taskInput.value = "";
+  }
+  if (event.target.classList.contains("delete-task")) {
+    var task = event.target.parentNode.getElementsByTagName("P")[0].innerText;
+    form.tasks.splice(form.tasks.indexOf(task), 1);
+    event.target.closest("#new-task-holder").removeChild(event.target.parentNode);
+  }
+  if (event.target == form.submit) {
+    var titleFilled = !!form.title.value;
+    var tasksFilled = !!form.tasks.length;
+    
+    if (titleFilled && tasksFilled) {
+      var taskList = [];
+      form.tasks.forEach(task => {
+        taskList.push(new Task(task));
+      });
+      var newList = new ToDoList(form.title.value, taskList);
+      newList.saveToStorage();
+      displayList(newList);
+
+      clearForm();
+    }
+  }
+});
+
 listHolder.addEventListener('click', function() {
   if (event.target.classList.contains("list-action-urgent")) {
-    var list = event.target.closest(".list");
-    list.classList.toggle("list-urgent");
-    var listObj = ToDoList.getListById(list.dataset.listId);
-    listObj.updateToDo({urgent: !listObj.urgent});
-    listObj.saveToStorage();
+    markUrgent(event.target.closest(".list"));
   }
 });
 
