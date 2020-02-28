@@ -7,7 +7,6 @@ class ToDoList {
   }
 
   static getListById(listId) {
-    console.log(listId);
     var listObj = ToDoList.getLists()[listId];
     return ToDoList.parseObject(listObj);
   }

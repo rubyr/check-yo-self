@@ -44,21 +44,16 @@ function displayList(list) {
 listHolder.addEventListener('click', function() {
   if (event.target.classList.contains("list-action-urgent")) {
     var list = event.target.closest(".list");
-    list.classList.add("list-urgent");
-    console.log(list.dataset.listId);
+    list.classList.toggle("list-urgent");
     var listObj = ToDoList.getListById(list.dataset.listId);
-    listObj.updateToDo({urgent: true});
+    listObj.updateToDo({urgent: !listObj.urgent});
     listObj.saveToStorage();
   }
 });
 
 window.onload = function() {
-  // get object of all lists
   var allLists = ToDoList.getLists();
-  // for each list
   for (var listId in allLists) {
-    console.log(allLists);
     displayList(allLists[listId]);
   }
-  // add onto the window
 };
