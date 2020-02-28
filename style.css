@@ -75,6 +75,10 @@ aside button {
   border: none;
 }
 
+aside button:active {
+  background: #3f3f5d;
+}
+
 aside button.add-task {
   width: 15%;
   font-size: 48px;
@@ -105,7 +109,7 @@ aside button.add-task {
 }
 
 .search button {
-  background: #f3f6f7;
+  background: #c8d3d9;
   border: none;
   outline: none;
   width: 40px;
@@ -113,6 +117,10 @@ aside button.add-task {
   padding: 5px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
+}
+
+.search button:active {
+  background: #a8b3b9;
 }
 
 .form * {
@@ -215,6 +223,10 @@ aside button.add-task {
 
 .list-action-delete {
   float: right;
+}
+
+.list-action-delete:hover {
+  color: #d23a25;
 }
 
 .list-action-delete:hover img {
