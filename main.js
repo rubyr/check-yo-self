@@ -18,8 +18,8 @@ function createCard(list) {
   </section>
   <section class="list-items">`;
 
-  list.tasks.forEach(task => {
-    cardStr += `<div class="list-individual-item">
+  list.tasks.forEach((task, i) => {
+    cardStr += `<div class="list-individual-item${(task.completed) ? " checked" : ""}" data-task-num="${i}">
     <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
   </div>`;
   });
@@ -45,7 +45,7 @@ function displayList(list) {
   if (listHolder.childElementCount === 0) {
     listHolder.innerHTML = listHTML;
   } else {
-    listHolder.innerHTML += listHTML;
+    listHolder.innerHTML = listHTML + listHolder.innerHTML;
   }
 }
 
@@ -61,6 +61,13 @@ function clearForm() {
   form.title.value = "";
   form.taskInput.value = "";
   form.tasks = [];
+}
+
+function checkTask(task) {
+  var list = task.closest(".list");
+  list = ToDoList.getListById(list.dataset.listId);
+  list.updateTask(task.dataset.taskNum, {completed: true});
+  task.classList.add("checked");
 }
 
 aside.addEventListener('click', function() {
@@ -102,6 +109,9 @@ aside.addEventListener('click', function() {
 listHolder.addEventListener('click', function() {
   if (event.target.classList.contains("list-action-urgent")) {
     markUrgent(event.target.closest(".list"));
+  }
+  if (event.target.classList.contains("list-individual-item")) {
+    checkTask(event.target);
   }
 });
 

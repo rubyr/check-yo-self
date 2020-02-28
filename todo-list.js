@@ -13,6 +13,10 @@ class ToDoList {
 
   static parseObject(toDoObject) {
     var newList = new ToDoList(toDoObject.title, toDoObject.tasks);
+    newList.tasks.forEach((task, i) => {
+      newList.tasks[i] = new Task(task.content);
+      newList.tasks[i].completed = task.completed;
+    });
     newList.id = toDoObject.id;
     newList.urgent = toDoObject.urgent;
     return newList;
@@ -42,10 +46,12 @@ class ToDoList {
     this.title = options.title || this.title;
     if (options.urgent !== undefined)
       this.urgent = options.urgent;
+    this.saveToStorage();
   }
 
   updateTask(taskNum, options) {
     this.tasks[taskNum].update(options);
+    this.saveToStorage();
   }
 }
 
