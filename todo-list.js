@@ -6,6 +6,19 @@ class ToDoList {
     this.urgent = false;
   }
 
+  static getListById(listId) {
+    console.log(listId);
+    var listObj = ToDoList.getLists()[listId];
+    return ToDoList.parseObject(listObj);
+  }
+
+  static parseObject(toDoObject) {
+    var newList = new ToDoList(toDoObject.title, toDoObject.tasks);
+    newList.id = toDoObject.id;
+    newList.urgent = toDoObject.urgent;
+    return newList;
+  }
+
   static getLists() {
     var lists = localStorage.getItem("lists");
     if (lists === null) {
@@ -15,7 +28,7 @@ class ToDoList {
   }
 
   saveToStorage() {
-    var lists = this.getLists();
+    var lists = ToDoList.getLists();
     lists[`${this.id}`] = this;
     localStorage.setItem("lists", JSON.stringify(lists));
   }

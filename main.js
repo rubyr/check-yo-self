@@ -1,6 +1,6 @@
 var listHolder = document.querySelector(".lists");
 
-function createCard(list) {
+function createCard(list) { 
   var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}">
   <section class="list-title">
     <h3>${list.title}</h3>
@@ -42,8 +42,13 @@ function displayList(list) {
 // list1.saveToStorage();
 
 listHolder.addEventListener('click', function() {
-  if (event.target.classList.contains("list")) {
-
+  if (event.target.classList.contains("list-action-urgent")) {
+    var list = event.target.closest(".list");
+    list.classList.add("list-urgent");
+    console.log(list.dataset.listId);
+    var listObj = ToDoList.getListById(list.dataset.listId);
+    listObj.updateToDo({urgent: true});
+    listObj.saveToStorage();
   }
 });
 
@@ -51,9 +56,9 @@ window.onload = function() {
   // get object of all lists
   var allLists = ToDoList.getLists();
   // for each list
-  for (var listID in allLists) {
-    console.log(allLists[listID]);
-    displayList(allLists[listID]);
+  for (var listId in allLists) {
+    console.log(allLists);
+    displayList(allLists[listId]);
   }
   // add onto the window
 };
