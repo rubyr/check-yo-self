@@ -81,9 +81,6 @@ aside button.add-task {
   outline: none;
 }
 
-.form div {
-}
-
 .form div * {
   text-transform: none;
   line-height: normal;
@@ -107,7 +104,6 @@ aside button.add-task {
   height: auto;
   columns: 250px;
   padding: 20px;
-  overflow: scroll;
 }
 
 .list {
