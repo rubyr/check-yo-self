@@ -107,6 +107,7 @@ aside button.add-task {
   height: auto;
   columns: 250px;
   padding: 20px;
+  overflow: scroll;
 }
 
 .list {

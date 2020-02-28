@@ -71,7 +71,11 @@ function checkTask(task) {
 }
 
 function deleteList(list) {
-  ToDoList.getListById(list.dataset.listId).deleteFromStorage();
+  var listObj = ToDoList.getListById(list.dataset.listId);
+  if (!listObj.allTasksDone) {
+    return;
+  }
+  listObj.deleteFromStorage();
   listHolder.removeChild(list);
   if (listHolder.childElementCount == 0) {
     listHolder.innerHTML = "Nothing here. Add a task!";
