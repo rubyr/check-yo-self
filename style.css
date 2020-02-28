@@ -159,7 +159,6 @@ aside button.add-task {
   overflow: auto;
   text-transform: uppercase;
   font-size: 10px;
-  cursor: pointer;
 }
 
 .list-actions>* {
@@ -168,6 +167,7 @@ aside button.add-task {
   align-items: center;
   justify-content: space-between;
   height: 40px;
+  cursor: pointer;
 }
 
 .list-actions>*>* {
@@ -180,6 +180,10 @@ aside button.add-task {
 
 .list-action-delete {
   float: right;
+}
+
+.list-action-delete:hover img {
+  content: url(assets/delete-active.svg);
 }
 
 .list-urgent {

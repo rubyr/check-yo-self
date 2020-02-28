@@ -52,7 +52,7 @@ function displayList(list) {
 function markUrgent(list) {
   list.classList.toggle("list-urgent");
   var listObj = ToDoList.getListById(list.dataset.listId);
-  listObj.updateToDo({urgent: !listObj.urgent});
+  listObj.updateToDo({urgent: "toggle"});
   listObj.saveToStorage();
 }
 
@@ -66,8 +66,16 @@ function clearForm() {
 function checkTask(task) {
   var list = task.closest(".list");
   list = ToDoList.getListById(list.dataset.listId);
-  list.updateTask(task.dataset.taskNum, {completed: true});
-  task.classList.add("checked");
+  list.updateTask(task.dataset.taskNum, {completed: "toggle"});
+  task.classList.toggle("checked");
+}
+
+function deleteList(list) {
+  ToDoList.getListById(list.dataset.listId).deleteFromStorage();
+  listHolder.removeChild(list);
+  if (listHolder.childElementCount == 0) {
+    listHolder.innerHTML = "Nothing here. Add a task!";
+  }
 }
 
 aside.addEventListener('click', function() {
@@ -112,6 +120,9 @@ listHolder.addEventListener('click', function() {
   }
   if (event.target.classList.contains("list-individual-item")) {
     checkTask(event.target);
+  }
+  if (event.target.classList.contains("list-action-delete")) {
+    deleteList(event.target.closest(".list"));
   }
 });
 

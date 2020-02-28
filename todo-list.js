@@ -37,15 +37,17 @@ class ToDoList {
   }
 
   deleteFromStorage() {
-    var lists = this.getLists();
+    var lists = ToDoList.getLists();
     delete lists[`${this.id}`];
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
   updateToDo(options) {
     this.title = options.title || this.title;
-    if (options.urgent !== undefined)
+    if (typeof options.urgent == "boolean")
       this.urgent = options.urgent;
+    if (options.urgent == "toggle")
+      this.urgent = !this.urgent;
     this.saveToStorage();
   }
 
