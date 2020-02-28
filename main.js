@@ -49,9 +49,6 @@ function displayList(list) {
   }
 }
 
-// var list1 = new ToDoList("Get ripped", [new Task("Talk to jeff"), new Task("talk to Steve")]);
-// list1.saveToStorage();
-
 function markUrgent(list) {
   list.classList.toggle("list-urgent");
   var listObj = ToDoList.getListById(list.dataset.listId);
@@ -96,6 +93,9 @@ aside.addEventListener('click', function() {
 
       clearForm();
     }
+  }
+  if (event.target == form.clear) {
+    clearForm();
   }
 });
 
