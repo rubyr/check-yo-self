@@ -5,15 +5,23 @@
   box-sizing: border-box;
 }
 
-h1 {
+header {
   background-color: #1f1f3d;
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;
-  height: 60px;
+  height: 100px;
   padding-left: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+h1 {
+  display: inline;
 }
 
 main {
@@ -67,6 +75,10 @@ aside button {
   border: none;
 }
 
+aside button:active {
+  background: #3f3f5d;
+}
+
 aside button.add-task {
   width: 15%;
   font-size: 48px;
@@ -75,6 +87,40 @@ aside button.add-task {
 
 .yellow-text {
   color: #ffc30c;
+}
+
+.search {
+  margin: 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search input {
+  font-size: 16px;
+  height: 100%;
+  width: 90%;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border: none;
+  padding: 10px; 
+  outline: none;
+}
+
+.search button {
+  background: #c8d3d9;
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.search button:active {
+  background: #a8b3b9;
 }
 
 .form * {
@@ -179,6 +225,10 @@ aside button.add-task {
   float: right;
 }
 
+.list-action-delete:hover {
+  color: #d23a25;
+}
+
 .list-action-delete:hover img {
   content: url(assets/delete-active.svg);
 }
@@ -201,14 +251,26 @@ aside button.add-task {
 }
 
 @media all and (min-width: 600px) {
+  header {
+    flex-direction: row;
+    height: 60px;
+  }
   main {
     min-height: calc(100vh - 60px);
     flex-direction: row;
   }
-  aside {
+  aside { 
     width: 300px;
     min-height: 100%;
     flex: 1 0 300px;
+  }
+  .search {
+    width: 40%;
+    max-width: 400px;
+  }
+  .form {
+    position: sticky;
+    top: 70px;
   }
   .lists {
     flex: 2 0 calc(100% - 300px);

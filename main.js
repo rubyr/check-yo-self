@@ -1,15 +1,53 @@
 const $ = document.querySelector.bind(document);
 var aside = $("aside");
-var form = {
-  title:     $("#list-title-input"),
-  taskList:  $("#new-task-holder"),
-  taskInput: $("#task-input"),
-  addTask:   $(".add-task"),
-  submit:    $("#submit-new-list"),
-  clear:     $("#clear-new-list"),
-  tasks:     []
-};
 var listHolder = $(".lists");
+var form = {
+  title:      $("#list-title-input"),
+  taskList:   $("#new-task-holder"),
+  taskInput:  $("#task-input"),
+  addTaskBtn: $(".add-task"),
+  submitBtn:  $("#submit-new-list"),
+  clearBtn:   $("#clear-new-list"),
+  tasks:      [],
+  deleteTask: function(task) {
+    var taskName = task.parentNode.getElementsByTagName("P")[0].innerText;
+    this.tasks.splice(this.tasks.indexOf(taskName), 1);
+    task.closest("#new-task-holder").removeChild(task.parentNode);
+  },
+  addTask: function() {
+    if (this.taskInput.value != "") {
+      this.taskList.innerHTML += 
+      `<div>
+        <img src="assets/delete.svg" alt="Delete Item" class="delete-task">
+        <p>${this.taskInput.value}</p>
+      </div>`;
+      this.tasks.push(form.taskInput.value);
+      this.taskInput.value = "";
+    }
+  },
+  submit: function() {
+    var titleFilled = !!this.title.value;
+    var tasksFilled = !!this.tasks.length;
+    
+    if (titleFilled && tasksFilled) {
+      var taskList = [];
+      this.tasks.forEach(task => {
+        taskList.push(new Task(task));
+      });
+      var newList = new ToDoList(this.title.value, taskList);
+      newList.saveToStorage();
+      displayList(newList);
+
+      form.clear();
+    }
+  },
+  clear: function() {
+    this.taskList.innerHTML = "";
+    this.title.value = "";
+    this.taskInput.value = "";
+    this.tasks = [];
+  }
+};
 
 function createCard(list) { 
   var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}">
@@ -56,13 +94,6 @@ function markUrgent(list) {
   listObj.saveToStorage();
 }
 
-function clearForm() {
-  form.taskList.innerHTML = "";
-  form.title.value = "";
-  form.taskInput.value = "";
-  form.tasks = [];
-}
-
 function checkTask(task) {
   var list = task.closest(".list");
   list = ToDoList.getListById(list.dataset.listId);
@@ -77,44 +108,23 @@ function deleteList(list) {
   }
   listObj.deleteFromStorage();
   listHolder.removeChild(list);
-  if (listHolder.childElementCount == 0) {
+  if (listHolder.childElementCount === 0) {
     listHolder.innerHTML = "Nothing here. Add a task!";
   }
 }
 
 aside.addEventListener('click', function() {
-  if (event.target == form.addTask && form.taskInput.value != "") {
-    form.taskList.innerHTML += 
-    `<div>
-      <img src="assets/delete.svg" alt="Delete Item" class="delete-task">
-      <p>${form.taskInput.value}</p>
-    </div>`;
-    form.tasks.push(form.taskInput.value);
-    form.taskInput.value = "";
+  if (event.target === form.addTaskBtn) {
+    form.addTask();
   }
   if (event.target.classList.contains("delete-task")) {
-    var task = event.target.parentNode.getElementsByTagName("P")[0].innerText;
-    form.tasks.splice(form.tasks.indexOf(task), 1);
-    event.target.closest("#new-task-holder").removeChild(event.target.parentNode);
+    form.deleteTask(event.target);
   }
-  if (event.target == form.submit) {
-    var titleFilled = !!form.title.value;
-    var tasksFilled = !!form.tasks.length;
-    
-    if (titleFilled && tasksFilled) {
-      var taskList = [];
-      form.tasks.forEach(task => {
-        taskList.push(new Task(task));
-      });
-      var newList = new ToDoList(form.title.value, taskList);
-      newList.saveToStorage();
-      displayList(newList);
-
-      clearForm();
-    }
+  if (event.target === form.submitBtn) {
+    form.submit();
   }
-  if (event.target == form.clear) {
-    clearForm();
+  if (event.target === form.clearBtn) {
+    form.clear();
   }
 });
 

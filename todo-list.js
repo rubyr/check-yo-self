@@ -45,9 +45,9 @@ class ToDoList {
 
   updateToDo(options) {
     this.title = options.title || this.title;
-    if (typeof options.urgent == "boolean")
+    if (typeof options.urgent === "boolean")
       this.urgent = options.urgent;
-    if (options.urgent == "toggle")
+    if (options.urgent === "toggle")
       this.urgent = !this.urgent;
     this.saveToStorage();
   }
@@ -59,5 +59,5 @@ class ToDoList {
   }
 }
 
-if (typeof exports == "object")
+if (typeof exports === "object")
   module.exports = ToDoList;
