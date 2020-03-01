@@ -9,12 +9,12 @@ var form = {
   submitBtn:  $("#submit-new-list"),
   clearBtn:   $("#clear-new-list"),
   tasks:      [],
-  deleteTask: function(task) {
+  deleteTask(task) {
     var taskName = task.parentNode.getElementsByTagName("P")[0].innerText;
     this.tasks.splice(this.tasks.indexOf(taskName), 1);
     task.closest("#new-task-holder").removeChild(task.parentNode);
   },
-  addTask: function() {
+  addTask() {
     if (this.taskInput.value != "") {
       this.taskList.innerHTML += 
       `<div>
@@ -25,7 +25,7 @@ var form = {
       this.taskInput.value = "";
     }
   },
-  submit: function() {
+  submit() {
     var titleFilled = !!this.title.value;
     var tasksFilled = !!this.tasks.length;
     
@@ -41,16 +41,63 @@ var form = {
       form.clear();
     }
   },
-  clear: function() {
+  clear() {
     this.taskList.innerHTML = "";
     this.title.value = "";
     this.taskInput.value = "";
     this.tasks = [];
   }
 };
+var filter = {
+  urgent: false,
+  title: false,
+  urgentBtn:  $("#filter-by-urgent"),
+  search: $("#search"),
+  iterateCards(callback) {
+    for (var i = 0; i < listHolder.childElementCount; i++) {
+      var thisList = listHolder.children[i];
+      callback(thisList);
+    }
+  }, 
+  sortUrgent() {
+    filter.iterateCards(list => {
+      if (list.classList.contains("list-urgent"))
+        list.classList.remove("hidden");
+      else 
+        list.classList.add("hidden");
+    });
+  },
+  sortTitle() {
+    filter.iterateCards(function(list) {
+      if (filter.urgent && list.classList.contains("hidden"))
+        return;
+      if (list.title.includes(filter.search.value)) {
+        list.classList.remove("hidden");
+      } else {
+        list.classList.add("hidden");
+      }
+    });
+  },
+  showAll() {
+    filter.iterateCards(list => list.classList.remove("hidden"));
+  },
+  filterCards() {
+    this.title = (this.search.value !== "");
+    if (this.urgent) {
+      this.sortUrgent();
+    } else if (!this.title) {
+      this.showAll();
+    }
+    if (this.title) {
+      this.sortTitle();
+    } else if (!this.urgent) {
+      this.showAll();
+    }
+  }
+};
 
 function createCard(list) { 
-  var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}">
+  var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}" title="${list.title}">
   <section class="list-title">
     <h3>${list.title}</h3>
   </section>
@@ -126,6 +173,11 @@ aside.addEventListener('click', function() {
   if (event.target === form.clearBtn) {
     form.clear();
   }
+  if (event.target === filter.urgentBtn) {
+    filter.urgentBtn.classList.toggle("button-selected");
+    filter.urgent = !filter.urgent;
+    filter.filterCards();
+  }
 });
 
 listHolder.addEventListener('click', function() {
@@ -138,6 +190,10 @@ listHolder.addEventListener('click', function() {
   if (event.target.classList.contains("list-action-delete")) {
     deleteList(event.target.closest(".list"));
   }
+});
+
+filter.search.addEventListener('keyup', function() {
+  filter.filterCards();
 });
 
 window.onload = function() {

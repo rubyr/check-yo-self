@@ -11,10 +11,10 @@
   <header>
     <h1>Check <span class="yellow-text">Yo'</span> self</h1>
     <div class="search">
-      <button class="search-button">
+      <div class="search-icon">
         <img src="assets/search.svg" alt="Search">
-      </button>
-      <input type="text" placeholder="Search">
+      </div>
+      <input type="text" placeholder="Search" id="search">
     </div>
   </header>
   <main>
@@ -30,7 +30,7 @@
         </section>
         <button id="submit-new-list">make task list</button>
         <button id="clear-new-list">clear all</button>
-        <button>filter by urgency</button>
+        <button id="filter-by-urgent">filter by urgency</button>
       </section>
     </aside>
     <section class="lists"> <!-- TODO: find a better name for this class -->
