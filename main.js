@@ -1,6 +1,5 @@
 const $ = document.querySelector.bind(document);
 var aside = $("aside");
-var listHolder = $(".lists");
 var form = {
   title:      $("#list-title-input"),
   taskList:   $("#new-task-holder"),
@@ -54,11 +53,16 @@ var filter = {
   urgentBtn:  $("#filter-by-urgent"),
   search: $("#search"),
   iterateCards(callback) {
-    for (var i = 0; i < listHolder.childElementCount; i++) {
-      var thisList = listHolder.children[i];
+    for (var i = 0; i < lists.container.childElementCount; i++) {
+      var thisList = lists.container.children[i];
       callback(thisList);
     }
   }, 
+  urgentClicked() {
+    this.urgentBtn.classList.toggle("button-selected");
+    this.urgent = !this.urgent;
+    this.filterCards();
+  },
   sortUrgent() {
     this.iterateCards(list => {
       if (list.classList.contains("list-urgent"))
@@ -95,70 +99,73 @@ var filter = {
     }
   }
 };
+var lists = {
+  container: $(".lists"),
 
-function createCard(list) { 
-  var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}" title="${list.title}">
-  <section class="list-title">
-    <h3>${list.title}</h3>
-  </section>
-  <section class="list-items">`;
+  createCard(list) { 
+    var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}" title="${list.title}">
+    <section class="list-title">
+      <h3>${list.title}</h3>
+    </section>
+    <section class="list-items">`;
 
-  list.tasks.forEach((task, i) => {
-    cardStr += `<div class="list-individual-item${(task.completed) ? " checked" : ""}" data-task-num="${i}">
-    <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
-  </div>`;
-  });
+    list.tasks.forEach((task, i) => {
+      cardStr += `<div class="list-individual-item${(task.completed) ? " checked" : ""}" data-task-num="${i}">
+      <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
+    </div>`;
+    });
 
-  cardStr += `</section>
-  <section class="list-actions">
-    <div class="list-action-urgent">
-      <img src="assets/urgent.svg" alt="Urgent"> 
-      <p>urgent</p>
-    </div>
-    <div class="list-action-delete">
-      <img src="assets/delete.svg" alt="Delete"> 
-      <p>delete</p>
-    </div>
-  </section>
-  </section>`;
+    cardStr += `</section>
+    <section class="list-actions">
+      <div class="list-action-urgent">
+        <img src="assets/urgent.svg" alt="Urgent"> 
+        <p>urgent</p>
+      </div>
+      <div class="list-action-delete">
+        <img src="assets/delete.svg" alt="Delete"> 
+        <p>delete</p>
+      </div>
+    </section>
+    </section>`;
 
-  return cardStr;
-}
+    return cardStr;
+  },
 
-function displayList(list) {
-  var listHTML = createCard(list);
-  if (listHolder.childElementCount === 0) {
-    listHolder.innerHTML = listHTML;
-  } else {
-    listHolder.innerHTML = listHTML + listHolder.innerHTML;
+  displayList(list) {
+    var listHTML = this.createCard(list);
+    if (this.container.childElementCount === 0) {
+      this.container.innerHTML = listHTML;
+    } else {
+      this.container.innerHTML = listHTML + this.container.innerHTML;
+    }
+  },
+
+  markUrgent(list) {
+    list.classList.toggle("list-urgent");
+    var listObj = ToDoList.getListById(list.dataset.listId);
+    listObj.updateToDo({urgent: "toggle"});
+    listObj.saveToStorage();
+  },
+
+  checkTask(task) {
+    var list = task.closest(".list");
+    list = ToDoList.getListById(list.dataset.listId);
+    list.updateTask(task.dataset.taskNum, {completed: "toggle"});
+    task.classList.toggle("checked");
+  },
+
+  deleteList(list) {
+    var listObj = ToDoList.getListById(list.dataset.listId);
+    if (!listObj.allTasksDone) {
+      return;
+    }
+    listObj.deleteFromStorage();
+    this.container.removeChild(list);
+    if (this.container.childElementCount === 0) {
+      this.container.innerHTML = "Nothing here. Add a task!";
+    }
   }
-}
-
-function markUrgent(list) {
-  list.classList.toggle("list-urgent");
-  var listObj = ToDoList.getListById(list.dataset.listId);
-  listObj.updateToDo({urgent: "toggle"});
-  listObj.saveToStorage();
-}
-
-function checkTask(task) {
-  var list = task.closest(".list");
-  list = ToDoList.getListById(list.dataset.listId);
-  list.updateTask(task.dataset.taskNum, {completed: "toggle"});
-  task.classList.toggle("checked");
-}
-
-function deleteList(list) {
-  var listObj = ToDoList.getListById(list.dataset.listId);
-  if (!listObj.allTasksDone) {
-    return;
-  }
-  listObj.deleteFromStorage();
-  listHolder.removeChild(list);
-  if (listHolder.childElementCount === 0) {
-    listHolder.innerHTML = "Nothing here. Add a task!";
-  }
-}
+};
 
 aside.addEventListener('click', function() {
   if (event.target === form.addTaskBtn) {
@@ -174,31 +181,27 @@ aside.addEventListener('click', function() {
     form.clear();
   }
   if (event.target === filter.urgentBtn) {
-    filter.urgentBtn.classList.toggle("button-selected");
-    filter.urgent = !filter.urgent;
-    filter.filterCards();
+    filter.urgentClicked();
   }
 });
 
-listHolder.addEventListener('click', function() {
+lists.container.addEventListener('click', function() {
   if (event.target.classList.contains("list-action-urgent")) {
-    markUrgent(event.target.closest(".list"));
+    lists.markUrgent(event.target.closest(".list"));
   }
   if (event.target.classList.contains("list-individual-item")) {
-    checkTask(event.target);
+    lists.checkTask(event.target);
   }
   if (event.target.classList.contains("list-action-delete")) {
-    deleteList(event.target.closest(".list"));
+    lists.deleteList(event.target.closest(".list"));
   }
 });
 
-filter.search.addEventListener('keyup', function() {
-  filter.filterCards();
-});
+filter.search.addEventListener('keyup', filter.filterCards);
 
 window.onload = function() {
   var allLists = ToDoList.getLists();
   for (var listId in allLists) {
-    displayList(allLists[listId]);
+    lists.displayList(allLists[listId]);
   }
 };
