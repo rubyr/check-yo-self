@@ -85,6 +85,10 @@ aside button.add-task {
   margin-top: 0;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .yellow-text {
   color: #ffc30c;
 }
@@ -108,7 +112,7 @@ aside button.add-task {
   outline: none;
 }
 
-.search button {
+.search-icon {
   background: #c8d3d9;
   border: none;
   outline: none;
@@ -117,10 +121,6 @@ aside button.add-task {
   padding: 5px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
-}
-
-.search button:active {
-  background: #a8b3b9;
 }
 
 .form * {
@@ -142,6 +142,10 @@ aside button.add-task {
   height: 36px;
   display: flex;
   justify-content: space-between;
+}
+
+.button-selected {
+  background: #3f3f5d;
 }
 
 .lists {
