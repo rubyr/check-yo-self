@@ -35,7 +35,7 @@ var form = {
       });
       var newList = new ToDoList(this.title.value, taskList);
       newList.saveToStorage();
-      displayList(newList);
+      lists.displayList(newList);
 
       form.clear();
     }
