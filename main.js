@@ -60,7 +60,7 @@ var filter = {
     }
   }, 
   sortUrgent() {
-    filter.iterateCards(list => {
+    this.iterateCards(list => {
       if (list.classList.contains("list-urgent"))
         list.classList.remove("hidden");
       else 
@@ -68,7 +68,7 @@ var filter = {
     });
   },
   sortTitle() {
-    filter.iterateCards(function(list) {
+    this.iterateCards(function(list) {
       if (filter.urgent && list.classList.contains("hidden"))
         return;
       if (list.title.includes(filter.search.value)) {
@@ -79,7 +79,7 @@ var filter = {
     });
   },
   showAll() {
-    filter.iterateCards(list => list.classList.remove("hidden"));
+    this.iterateCards(list => list.classList.remove("hidden"));
   },
   filterCards() {
     this.title = (this.search.value !== "");
