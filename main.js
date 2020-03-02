@@ -130,6 +130,8 @@ var lists = {
 
   setTitle() {
     var input = $("#title-input-TEMP");
+    if (input.value === "")
+      return;
     var list = input.closest(".list");
     var newTitle = input.value;
     input.parentNode.innerHTML = `<h3>${newTitle}</h3>`;
@@ -147,6 +149,8 @@ var lists = {
 
   setTask() {
     var input = $("#task-input-TEMP");
+    if (input.value === "")
+      return;
     var item = input.closest(".list-individual-item");
     var newTask = input.value;
     item.removeChild(input);
