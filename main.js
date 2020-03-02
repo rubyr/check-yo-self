@@ -102,7 +102,6 @@ var lists = {
     list.classList.toggle("list-urgent");
     var listObj = ToDoList.getListById(list.dataset.listId);
     listObj.updateToDo({ urgent: "toggle" });
-    listObj.saveToStorage();
   },
 
   checkTask(task) {

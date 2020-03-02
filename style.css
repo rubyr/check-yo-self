@@ -317,6 +317,5 @@ aside button.add-task {
   }
   .lists {
     flex: 2 0 calc(100% - 300px);
-    /* height: calc(100vh - 60px); */
   }
 }
