@@ -172,6 +172,19 @@ aside button.add-task {
   border: 1px solid #c7d3d8;
 }
 
+.list-title>* {
+  pointer-events: none;
+}
+
+.list-title input {
+  line-height: 1.168rem;
+  font-size: 1.168rem;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  outline: none;
+}
+
 .list img {
   width: 20px;
 }

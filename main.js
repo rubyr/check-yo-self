@@ -116,6 +116,23 @@ var lists = {
     if (this.listCount === 0) {
       this.noListsMessage.classList.remove("hidden");
     }
+  },
+
+  editTitle(titleSection) {
+    var title = titleSection.parentNode.title;
+    titleSection.innerHTML = `<input tyle="text" id="title-input-TEMP">`;
+    var input = $("#title-input-TEMP");
+    input.value = title;
+    input.focus();
+  },
+
+  setTitle() {
+    var input = $("#title-input-TEMP");
+    var list = input.closest(".list");
+    var newTitle = input.value;
+    input.parentNode.innerHTML = `<h3>${newTitle}</h3>`;
+    list.title = newTitle;
+    ToDoList.getListById(list.dataset.listId).updateToDo({title: newTitle});
   }
 };
 var filter = {
@@ -176,7 +193,6 @@ var filter = {
   }
 };
 
-
 aside.addEventListener('click', function(event) {
   if (event.target === form.addTaskBtn) {
     form.addTask();
@@ -212,6 +228,20 @@ lists.container.addEventListener('click', function(event) {
   }
   if (event.target.classList.contains("list-action-delete")) {
     lists.deleteList(event.target.closest(".list"));
+  }
+  if ($("#title-input-TEMP") !== null) {
+    lists.setTitle();
+  }
+  if (event.target.classList.contains("list-title")) {
+    lists.editTitle(event.target);
+  }
+});
+
+lists.container.addEventListener('keyup', function(event) {
+  event.preventDefault();
+
+  if (event.keyCode === 13) {
+    lists.setTitle();
   }
 });
 
