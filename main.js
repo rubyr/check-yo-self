@@ -23,6 +23,7 @@ var form = {
       this.tasks.push(form.taskInput.value);
       this.taskInput.value = "";
     }
+    this.taskInput.focus();
   },
   submit() {
     var titleFilled = !!this.title.value;
@@ -47,60 +48,10 @@ var form = {
     this.tasks = [];
   }
 };
-var filter = {
-  urgent: false,
-  title: false,
-  urgentBtn:  $("#filter-by-urgent"),
-  search: $("#search"),
-  iterateCards(callback) {
-    for (var i = 0; i < lists.container.childElementCount; i++) {
-      var thisList = lists.container.children[i];
-      callback(thisList);
-    }
-  }, 
-  urgentClicked() {
-    this.urgentBtn.classList.toggle("button-selected");
-    this.urgent = !this.urgent;
-    this.filterCards();
-  },
-  sortUrgent() {
-    this.iterateCards(list => {
-      if (list.classList.contains("list-urgent"))
-        list.classList.remove("hidden");
-      else 
-        list.classList.add("hidden");
-    });
-  },
-  sortTitle() {
-    this.iterateCards(function(list) {
-      if (filter.urgent && list.classList.contains("hidden"))
-        return;
-      if (list.title.includes(filter.search.value)) {
-        list.classList.remove("hidden");
-      } else {
-        list.classList.add("hidden");
-      }
-    });
-  },
-  showAll() {
-    this.iterateCards(list => list.classList.remove("hidden"));
-  },
-  filterCards() {
-    this.title = (this.search.value !== "");
-    if (this.urgent) {
-      this.sortUrgent();
-    } else if (!this.title) {
-      this.showAll();
-    }
-    if (this.title) {
-      this.sortTitle();
-    } else if (!this.urgent) {
-      this.showAll();
-    }
-  }
-};
 var lists = {
   container: $(".lists"),
+  noListsMessage: $("#no-lists"),
+  listCount: 0,
 
   createCard(list) { 
     var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}" title="${list.title}">
@@ -133,11 +84,11 @@ var lists = {
 
   displayList(list) {
     var listHTML = this.createCard(list);
-    if (this.container.childElementCount === 0) {
-      this.container.innerHTML = listHTML;
-    } else {
-      this.container.innerHTML = listHTML + this.container.innerHTML;
+    if (this.listCount === 0) {
+      this.noListsMessage.classList.add("hidden");
     }
+    this.listCount++;
+    this.container.innerHTML = listHTML + this.container.innerHTML;
   },
 
   markUrgent(list) {
@@ -161,13 +112,72 @@ var lists = {
     }
     listObj.deleteFromStorage();
     this.container.removeChild(list);
-    if (this.container.childElementCount === 0) {
-      this.container.innerHTML = "Nothing here. Add a task!";
+    this.listCount--;
+    if (this.listCount === 0) {
+      this.noListsMessage.classList.remove("hidden");
+    }
+  }
+};
+var filter = {
+  urgent: false,
+  title: false,
+  urgentBtn:  $("#filter-by-urgent"),
+  search: $("#search"),
+  iterateCards(callback) {
+    for (var i = 0; i < lists.container.childElementCount; i++) {
+      var thisList = lists.container.children[i];
+      if (thisList.title !== "")
+        callback(thisList);
+    }
+  }, 
+  urgentClicked() {
+    this.urgentBtn.classList.toggle("button-selected");
+    this.urgent = !this.urgent;
+    this.filterCards();
+  },
+  sortUrgent() {
+    this.iterateCards(list => {
+      if (list.classList.contains("list-urgent"))
+        list.classList.remove("hidden");
+      else 
+        list.classList.add("hidden");
+    });
+    if (lists.container.querySelectorAll(".list:not(.hidden)").length === 0) {
+      $("#urgent-message").classList.remove("hidden");
+    }
+  },
+  sortTitle() {
+    this.iterateCards(function(list) {
+      if (filter.urgent && list.classList.contains("hidden"))
+        return;
+      if (list.title.includes(filter.search.value)) {
+        list.classList.remove("hidden");
+      } else {
+        list.classList.add("hidden");
+      }
+    });
+  },
+  showAll() {
+    this.iterateCards(list => list.classList.remove("hidden"));
+    $("#urgent-message").classList.add("hidden");
+  },
+  filterCards() {
+    this.title = (this.search.value !== "");
+    if (this.urgent) {
+      this.sortUrgent();
+    } else if (!this.title) {
+      this.showAll();
+    }
+    if (this.title) {
+      this.sortTitle();
+    } else if (!this.urgent) {
+      this.showAll();
     }
   }
 };
 
-aside.addEventListener('click', function() {
+
+aside.addEventListener('click', function(event) {
   if (event.target === form.addTaskBtn) {
     form.addTask();
   }
@@ -185,7 +195,15 @@ aside.addEventListener('click', function() {
   }
 });
 
-lists.container.addEventListener('click', function() {
+aside.addEventListener('keyup', function(event) {
+  event.preventDefault();
+
+  if (event.target === form.taskInput && event.keyCode === 13) {
+    form.addTask();
+  }
+});
+
+lists.container.addEventListener('click', function(event) {
   if (event.target.classList.contains("list-action-urgent")) {
     lists.markUrgent(event.target.closest(".list"));
   }
@@ -197,7 +215,9 @@ lists.container.addEventListener('click', function() {
   }
 });
 
-filter.search.addEventListener('keyup', filter.filterCards);
+filter.search.addEventListener('keyup', function() {
+  filter.filterCards();
+});
 
 window.onload = function() {
   var allLists = ToDoList.getLists();
