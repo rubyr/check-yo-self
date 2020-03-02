@@ -8,10 +8,8 @@ class Task {
     this.content = options.content || this.content;
     if (typeof options.completed === "boolean")
       this.completed = options.completed;
-    if (options.completed === "toggle")
-      this.completed = !this.completed;
+    if (options.completed === "toggle") this.completed = !this.completed;
   }
 }
 
-if (typeof exports === "object")
-  module.exports = Task;
+if (typeof exports === "object") module.exports = Task;

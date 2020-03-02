@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check yo' Self</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Check <span class="yellow-text">Yo'</span> self</h1>
-    <div class="search">
-      <div class="search-icon">
-        <img src="assets/search.svg" alt="Search">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check yo' Self</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Check <span class="yellow-text">Yo'</span> self</h1>
+      <div class="search">
+        <div class="search-icon">
+          <img src="assets/search.svg" alt="Search" />
+        </div>
+        <input type="text" placeholder="Search" id="search" />
       </div>
-      <input type="text" placeholder="Search" id="search">
-    </div>
-  </header>
-  <main>
-    <aside>
-      <section class="form">
-        <label for="title">Task Title</label>
-        <input type="text" name="title" id="list-title-input">
-        <section id="new-task-holder"></section>
-        <label for="new-item">Task Item</label>
-        <section class="new-list-task">
-          <input type="text" name="new-item" id="task-input">
-          <button class="add-task">+</button>
+    </header>
+    <main>
+      <aside>
+        <section class="form">
+          <label for="title">Task Title</label>
+          <input type="text" name="title" id="list-title-input" />
+          <section id="new-task-holder"></section>
+          <label for="new-item">Task Item</label>
+          <section class="new-list-task">
+            <input type="text" name="new-item" id="task-input" />
+            <button class="add-task">+</button>
+          </section>
+          <button id="submit-new-list">make task list</button>
+          <button id="clear-new-list">clear all</button>
+          <button id="filter-by-urgent">filter by urgency</button>
         </section>
-        <button id="submit-new-list">make task list</button>
-        <button id="clear-new-list">clear all</button>
-        <button id="filter-by-urgent">filter by urgency</button>
+      </aside>
+      <section class="lists">
+        <p id="no-lists">Nothing here. Add a task!</p>
+        <p class="hidden" id="urgent-message">
+          Nothing here. Mark some lists as urgent to get started!
+        </p>
       </section>
-    </aside>
-    <section class="lists">
-      <p id="no-lists">Nothing here. Add a task!</p>
-      <p class="hidden" id="urgent-message">Nothing here. Mark some lists as urgent to get started!</p>
-    </section>
-  </main>
-  <script src="task.js"></script>
-  <script src="todo-list.js"></script>
-  <script src="main.js"></script>
-</body>
+    </main>
+    <script src="task.js"></script>
+    <script src="todo-list.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>

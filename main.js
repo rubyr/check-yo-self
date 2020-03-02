@@ -1,22 +1,21 @@
 const $ = document.querySelector.bind(document);
 var aside = $("aside");
 var form = {
-  title:      $("#list-title-input"),
-  taskList:   $("#new-task-holder"),
-  taskInput:  $("#task-input"),
+  title: $("#list-title-input"),
+  taskList: $("#new-task-holder"),
+  taskInput: $("#task-input"),
   addTaskBtn: $(".add-task"),
-  submitBtn:  $("#submit-new-list"),
-  clearBtn:   $("#clear-new-list"),
-  tasks:      [],
+  submitBtn: $("#submit-new-list"),
+  clearBtn: $("#clear-new-list"),
+  tasks: [],
   deleteTask(task) {
     var taskName = task.parentNode.getElementsByTagName("P")[0].innerText;
     this.tasks.splice(this.tasks.indexOf(taskName), 1);
     task.closest("#new-task-holder").removeChild(task.parentNode);
   },
   addTask() {
-    if (this.taskInput.value != "") {
-      this.taskList.innerHTML += 
-      `<div>
+    if (this.taskInput.value !== "") {
+      this.taskList.innerHTML += `<div>
         <img src="assets/delete.svg" alt="Delete Item" class="delete-task">
         <p>${this.taskInput.value}</p>
       </div>`;
@@ -28,7 +27,7 @@ var form = {
   submit() {
     var titleFilled = !!this.title.value;
     var tasksFilled = !!this.tasks.length;
-    
+
     if (titleFilled && tasksFilled) {
       var taskList = [];
       this.tasks.forEach(task => {
@@ -53,16 +52,22 @@ var lists = {
   noListsMessage: $("#no-lists"),
   listCount: 0,
 
-  createCard(list) { 
-    var cardStr = `<section class="list${list.urgent ? " list-urgent" : ""}" data-list-id="${list.id}" title="${list.title}">
+  createCard(list) {
+    var cardStr = `<section class="list${
+      list.urgent ? " list-urgent" : ""
+    }" data-list-id="${list.id}" title="${list.title}">
     <section class="list-title">
       <h3>${list.title}</h3>
     </section>
     <section class="list-items">`;
 
     list.tasks.forEach((task, i) => {
-      cardStr += `<div class="list-individual-item${(task.completed) ? " checked" : ""}" data-task-num="${i}">
-      <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
+      cardStr += `<div class="list-individual-item${
+        task.completed ? " checked" : ""
+      }" data-task-num="${i}">
+      <img src="assets/checkbox.svg" alt="Check off item"> <p>${
+        task.content
+      }</p>
     </div>`;
     });
 
@@ -96,14 +101,14 @@ var lists = {
   markUrgent(list) {
     list.classList.toggle("list-urgent");
     var listObj = ToDoList.getListById(list.dataset.listId);
-    listObj.updateToDo({urgent: "toggle"});
+    listObj.updateToDo({ urgent: "toggle" });
     listObj.saveToStorage();
   },
 
   checkTask(task) {
     var list = task.closest(".list");
     list = ToDoList.getListById(list.dataset.listId);
-    list.updateTask(task.dataset.taskNum, {completed: "toggle"});
+    list.updateTask(task.dataset.taskNum, { completed: "toggle" });
     task.classList.toggle("checked");
   },
 
@@ -130,13 +135,12 @@ var lists = {
 
   setTitle() {
     var input = $("#title-input-TEMP");
-    if (input.value === "")
-      return;
+    if (input.value === "") return;
     var list = input.closest(".list");
     var newTitle = input.value;
     input.parentNode.innerHTML = `<h3>${newTitle}</h3>`;
     list.title = newTitle;
-    ToDoList.getListById(list.dataset.listId).updateToDo({title: newTitle});
+    ToDoList.getListById(list.dataset.listId).updateToDo({ title: newTitle });
   },
 
   editTask(task) {
@@ -150,20 +154,20 @@ var lists = {
 
   setTask() {
     var input = $("#task-input-TEMP");
-    if (input.value === "")
-      return;
+    if (input.value === "") return;
     var item = input.closest(".list-individual-item");
     var newTask = input.value;
     item.removeChild(input);
     item.innerHTML += `<p>${newTask}</p>`;
-    ToDoList.getListById(item.closest(".list").dataset.listId)
-      .updateTask(item.dataset.taskNum, {content: newTask});
+    ToDoList.getListById(item.closest(".list").dataset.listId).updateTask(
+      item.dataset.taskNum,
+      { content: newTask }
+    );
   },
 
   addTask(list) {
     var input = list.querySelector("#new-task-input");
-    if (input.value === "")
-      return;
+    if (input.value === "") return;
     var task = new Task(input.value);
     ToDoList.getListById(list.dataset.listId).addTask(task);
     var listItemHolder = list.querySelector(".list-items");
@@ -177,15 +181,14 @@ var lists = {
 var filter = {
   urgent: false,
   title: false,
-  urgentBtn:  $("#filter-by-urgent"),
+  urgentBtn: $("#filter-by-urgent"),
   search: $("#search"),
   iterateCards(callback) {
     for (var i = 0; i < lists.container.childElementCount; i++) {
       var thisList = lists.container.children[i];
-      if (thisList.title !== "")
-        callback(thisList);
+      if (thisList.title !== "") callback(thisList);
     }
-  }, 
+  },
   urgentClicked() {
     this.urgentBtn.classList.toggle("button-selected");
     this.urgent = !this.urgent;
@@ -195,8 +198,7 @@ var filter = {
     this.iterateCards(list => {
       if (list.classList.contains("list-urgent"))
         list.classList.remove("hidden");
-      else 
-        list.classList.add("hidden");
+      else list.classList.add("hidden");
     });
     if (lists.container.querySelectorAll(".list:not(.hidden)").length === 0) {
       $("#urgent-message").classList.remove("hidden");
@@ -204,8 +206,7 @@ var filter = {
   },
   sortTitle() {
     this.iterateCards(function(list) {
-      if (filter.urgent && list.classList.contains("hidden"))
-        return;
+      if (filter.urgent && list.classList.contains("hidden")) return;
       if (list.title.includes(filter.search.value)) {
         list.classList.remove("hidden");
       } else {
@@ -218,7 +219,7 @@ var filter = {
     $("#urgent-message").classList.add("hidden");
   },
   filterCards() {
-    this.title = (this.search.value !== "");
+    this.title = this.search.value !== "";
     if (this.urgent) {
       this.sortUrgent();
     }
@@ -231,7 +232,7 @@ var filter = {
   }
 };
 
-aside.addEventListener('click', function(event) {
+aside.addEventListener("click", function(event) {
   if (event.target === form.addTaskBtn) {
     form.addTask();
   }
@@ -249,7 +250,7 @@ aside.addEventListener('click', function(event) {
   }
 });
 
-aside.addEventListener('keyup', function(event) {
+aside.addEventListener("keyup", function(event) {
   event.preventDefault();
 
   if (event.target === form.taskInput && event.keyCode === 13) {
@@ -257,10 +258,9 @@ aside.addEventListener('keyup', function(event) {
   }
 });
 
-lists.container.addEventListener('click', function(event) {
+lists.container.addEventListener("click", function(event) {
   if ($("#task-input-TEMP") !== null) {
-    if (event.target !== $("#task-input-TEMP"))
-      lists.setTask();
+    if (event.target !== $("#task-input-TEMP")) lists.setTask();
   }
   if ($("#title-input-TEMP") !== null) {
     lists.setTitle();
@@ -272,8 +272,7 @@ lists.container.addEventListener('click', function(event) {
   if (event.target.parentNode.classList.contains("list-individual-item")) {
     if (event.target.tagName === "IMG")
       lists.checkTask(event.target.closest(".list-individual-item"));
-    if (event.target.tagName === "P")
-      lists.editTask(event.target);
+    if (event.target.tagName === "P") lists.editTask(event.target);
   }
   if (event.target.classList.contains("list-action-delete")) {
     lists.deleteList(event.target.closest(".list"));
@@ -283,17 +282,18 @@ lists.container.addEventListener('click', function(event) {
   }
 });
 
-lists.container.addEventListener('keyup', function(event) {
+lists.container.addEventListener("keyup", function(event) {
   event.preventDefault();
 
   if (event.keyCode === 13) {
     if ($("#title-input-TEMP") !== null) lists.setTitle();
     if ($("#task-input-TEMP") !== null) lists.setTask();
-    if (event.target.id === "new-task-input") lists.addTask(event.target.closest(".list"));
+    if (event.target.id === "new-task-input")
+      lists.addTask(event.target.closest(".list"));
   }
 });
 
-filter.search.addEventListener('keyup', function() {
+filter.search.addEventListener("keyup", function() {
   filter.filterCards();
 });
 

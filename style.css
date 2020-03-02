@@ -116,7 +116,7 @@ aside button.add-task {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   border: none;
-  padding: 10px; 
+  padding: 10px;
   outline: none;
 }
 
@@ -302,7 +302,7 @@ aside button.add-task {
     min-height: calc(100vh - 60px);
     flex-direction: row;
   }
-  aside { 
+  aside {
     width: 300px;
     min-height: 100%;
     flex: 1 0 300px;

@@ -1,6 +1,8 @@
 class ToDoList {
   constructor(title, tasks) {
-    this.id = Math.random().toString(36).substr(2, 9);
+    this.id = Math.random()
+      .toString(36)
+      .substr(2, 9);
     this.title = title;
     this.tasks = tasks;
     this.urgent = false;
@@ -9,8 +11,7 @@ class ToDoList {
 
   static getListById(listId) {
     var listObj = ToDoList.getLists()[listId];
-    if (listObj != undefined)
-      return ToDoList.parseObject(listObj);
+    if (listObj != undefined) return ToDoList.parseObject(listObj);
   }
 
   static parseObject(toDoObject) {
@@ -50,10 +51,8 @@ class ToDoList {
 
   updateToDo(options) {
     this.title = options.title || this.title;
-    if (typeof options.urgent === "boolean")
-      this.urgent = options.urgent;
-    if (options.urgent === "toggle")
-      this.urgent = !this.urgent;
+    if (typeof options.urgent === "boolean") this.urgent = options.urgent;
+    if (options.urgent === "toggle") this.urgent = !this.urgent;
     this.saveToStorage();
   }
 
@@ -64,5 +63,4 @@ class ToDoList {
   }
 }
 
-if (typeof exports === "object")
-  module.exports = ToDoList;
+if (typeof exports === "object") module.exports = ToDoList;
