@@ -23,6 +23,7 @@ var form = {
       this.tasks.push(form.taskInput.value);
       this.taskInput.value = "";
     }
+    this.taskInput.focus();
   },
   submit() {
     var titleFilled = !!this.title.value;
@@ -167,7 +168,7 @@ var lists = {
   }
 };
 
-aside.addEventListener('click', function() {
+aside.addEventListener('click', function(event) {
   if (event.target === form.addTaskBtn) {
     form.addTask();
   }
@@ -185,7 +186,15 @@ aside.addEventListener('click', function() {
   }
 });
 
-lists.container.addEventListener('click', function() {
+aside.addEventListener('keyup', function(event) {
+  event.preventDefault();
+
+  if (event.keyCode === 13){
+    form.addTask();
+  }
+});
+
+lists.container.addEventListener('click', function(event) {
   if (event.target.classList.contains("list-action-urgent")) {
     lists.markUrgent(event.target.closest(".list"));
   }
@@ -197,7 +206,9 @@ lists.container.addEventListener('click', function() {
   }
 });
 
-filter.search.addEventListener('keyup', filter.filterCards);
+filter.search.addEventListener('keyup', function() {
+  filter.filterCards();
+});
 
 window.onload = function() {
   var allLists = ToDoList.getLists();

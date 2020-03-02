@@ -145,7 +145,10 @@ aside button.add-task {
 }
 
 .button-selected {
-  background: #3f3f5d;
+  background: #ef4a23;
+  border: 2px solid #782616;
+  border-radius: 2px;
+  line-height: 32px;
 }
 
 .lists {
