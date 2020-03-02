@@ -66,7 +66,9 @@ var lists = {
     </div>`;
     });
 
-    cardStr += `</section>
+    cardStr += `
+    <input type="text" id="new-task-input">
+    </section>
     <section class="list-actions">
       <div class="list-action-urgent">
         <img src="assets/urgent.svg" alt="Urgent"> 
@@ -151,6 +153,20 @@ var lists = {
     item.innerHTML += `<p>${newTask}</p>`;
     ToDoList.getListById(item.closest(".list").dataset.listId)
       .updateTask(item.dataset.taskNum, {content: newTask});
+  },
+
+  addTask(list) {
+    var input = list.querySelector("#new-task-input");
+    if (input.value === "")
+      return;
+    var task = new Task(input.value);
+    ToDoList.getListById(list.dataset.listId).addTask(task);
+    var listItemHolder = list.querySelector(".list-items");
+    listItemHolder.removeChild(input);
+    listItemHolder.innerHTML += `<div class="list-individual-item" data-task-num="${listItemHolder.childElementCount}">
+    <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
+  </div>
+  <input type="text" id="new-task-input">`;
   }
 };
 var filter = {
@@ -267,6 +283,7 @@ lists.container.addEventListener('keyup', function(event) {
   if (event.keyCode === 13) {
     if ($("#title-input-TEMP") !== null) lists.setTitle();
     if ($("#task-input-TEMP") !== null) lists.setTask();
+    if (event.target.id === "new-task-input") lists.addTask(event.target.closest(".list"));
   }
 });
 

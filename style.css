@@ -195,6 +195,18 @@ aside button.add-task {
   margin-right: 10px;
 }
 
+.list-items input {
+  width: 80%;
+  margin: 0 0 10px 30px;
+  background-color: #f9fdff;
+  border: 1px solid #c7d3d8;
+  border-radius: 2px;
+  outline: none;
+  line-height: 1rem;
+  font-size: 1rem;
+  padding: 5px;
+}
+
 .list-individual-item {
   margin: 15px 0;
 }
