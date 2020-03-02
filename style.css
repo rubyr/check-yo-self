@@ -172,6 +172,19 @@ aside button.add-task {
   border: 1px solid #c7d3d8;
 }
 
+.list-title>* {
+  pointer-events: none;
+}
+
+.list-title input {
+  line-height: 1.168rem;
+  font-size: 1.168rem;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  outline: none;
+}
+
 .list img {
   width: 20px;
 }
@@ -182,17 +195,32 @@ aside button.add-task {
   margin-right: 10px;
 }
 
+.list-items>input {
+  width: 80%;
+  margin: 0 0 10px 30px;
+  background-color: #f9fdff;
+  border: 1px solid #c7d3d8;
+  border-radius: 2px;
+  outline: none;
+  line-height: 1rem;
+  font-size: 1rem;
+  padding: 5px;
+}
+
 .list-individual-item {
   margin: 15px 0;
 }
 
-.list-individual-item * {
-  pointer-events: none;
+.list-individual-item p {
+  margin-left: 25px;
 }
 
-/* .list-individual-item:hover img {
-  content: url(assets/checkbox-active.svg);
-} */
+.list-individual-item input {
+  font-size: 1rem;
+  border: none;
+  background: transparent;
+  outline: none;
+}
 
 .list-individual-item.checked {
   color: #3C6577;

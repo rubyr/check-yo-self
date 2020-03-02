@@ -66,7 +66,9 @@ var lists = {
     </div>`;
     });
 
-    cardStr += `</section>
+    cardStr += `
+    <input type="text" id="new-task-input">
+    </section>
     <section class="list-actions">
       <div class="list-action-urgent">
         <img src="assets/urgent.svg" alt="Urgent"> 
@@ -116,6 +118,59 @@ var lists = {
     if (this.listCount === 0) {
       this.noListsMessage.classList.remove("hidden");
     }
+  },
+
+  editTitle(titleSection) {
+    var title = titleSection.parentNode.title;
+    titleSection.innerHTML = `<input tyle="text" id="title-input-TEMP">`;
+    var input = $("#title-input-TEMP");
+    input.value = title;
+    input.focus();
+  },
+
+  setTitle() {
+    var input = $("#title-input-TEMP");
+    if (input.value === "")
+      return;
+    var list = input.closest(".list");
+    var newTitle = input.value;
+    input.parentNode.innerHTML = `<h3>${newTitle}</h3>`;
+    list.title = newTitle;
+    ToDoList.getListById(list.dataset.listId).updateToDo({title: newTitle});
+  },
+
+  editTask(task) {
+    var taskName = task.innerText;
+    task.outerHTML = `<input type="text" id="task-input-TEMP" value="${taskName}">`;
+    var input = $("#task-input-TEMP");
+    input.value = taskName;
+    input.focus();
+  },
+
+  setTask() {
+    var input = $("#task-input-TEMP");
+    if (input.value === "")
+      return;
+    var item = input.closest(".list-individual-item");
+    var newTask = input.value;
+    item.removeChild(input);
+    item.innerHTML += `<p>${newTask}</p>`;
+    ToDoList.getListById(item.closest(".list").dataset.listId)
+      .updateTask(item.dataset.taskNum, {content: newTask});
+  },
+
+  addTask(list) {
+    var input = list.querySelector("#new-task-input");
+    if (input.value === "")
+      return;
+    var task = new Task(input.value);
+    ToDoList.getListById(list.dataset.listId).addTask(task);
+    var listItemHolder = list.querySelector(".list-items");
+    listItemHolder.removeChild(input);
+    listItemHolder.innerHTML += `<div class="list-individual-item" data-task-num="${listItemHolder.childElementCount}">
+    <img src="assets/checkbox.svg" alt="Check off item"> <p>${task.content}</p>
+  </div>
+  <input type="text" id="new-task-input">`;
   }
 };
 var filter = {
@@ -176,7 +231,6 @@ var filter = {
   }
 };
 
-
 aside.addEventListener('click', function(event) {
   if (event.target === form.addTaskBtn) {
     form.addTask();
@@ -204,14 +258,36 @@ aside.addEventListener('keyup', function(event) {
 });
 
 lists.container.addEventListener('click', function(event) {
+  if ($("#task-input-TEMP") !== null) {
+    lists.setTask();
+  }
+  if ($("#title-input-TEMP") !== null) {
+    lists.setTitle();
+  }
   if (event.target.classList.contains("list-action-urgent")) {
     lists.markUrgent(event.target.closest(".list"));
   }
-  if (event.target.classList.contains("list-individual-item")) {
-    lists.checkTask(event.target);
+  if (event.target.parentNode.classList.contains("list-individual-item")) {
+    if (event.target.tagName === "IMG")
+      lists.checkTask(event.target.closest(".list-individual-item"));
+    if (event.target.tagName === "P")
+      lists.editTask(event.target);
   }
   if (event.target.classList.contains("list-action-delete")) {
     lists.deleteList(event.target.closest(".list"));
+  }
+  if (event.target.classList.contains("list-title")) {
+    lists.editTitle(event.target);
+  }
+});
+
+lists.container.addEventListener('keyup', function(event) {
+  event.preventDefault();
+
+  if (event.keyCode === 13) {
+    if ($("#title-input-TEMP") !== null) lists.setTitle();
+    if ($("#task-input-TEMP") !== null) lists.setTask();
+    if (event.target.id === "new-task-input") lists.addTask(event.target.closest(".list"));
   }
 });
 

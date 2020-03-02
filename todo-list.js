@@ -43,6 +43,11 @@ class ToDoList {
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
+  addTask(task) {
+    this.tasks.push(task);
+    this.saveToStorage();
+  }
+
   updateToDo(options) {
     this.title = options.title || this.title;
     if (typeof options.urgent === "boolean")
