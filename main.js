@@ -133,6 +133,24 @@ var lists = {
     input.parentNode.innerHTML = `<h3>${newTitle}</h3>`;
     list.title = newTitle;
     ToDoList.getListById(list.dataset.listId).updateToDo({title: newTitle});
+  },
+
+  editTask(task) {
+    var taskName = task.innerText;
+    task.outerHTML = `<input type="text" id="task-input-TEMP" value="${taskName}">`;
+    var input = $("#task-input-TEMP");
+    input.value = taskName;
+    input.focus();
+  },
+
+  setTask() {
+    var input = $("#task-input-TEMP");
+    var item = input.closest(".list-individual-item");
+    var newTask = input.value;
+    item.removeChild(input);
+    item.innerHTML += `<p>${newTask}</p>`;
+    ToDoList.getListById(item.closest(".list").dataset.listId)
+      .updateTask(item.dataset.taskNum, {content: newTask});
   }
 };
 var filter = {
@@ -220,17 +238,23 @@ aside.addEventListener('keyup', function(event) {
 });
 
 lists.container.addEventListener('click', function(event) {
-  if (event.target.classList.contains("list-action-urgent")) {
-    lists.markUrgent(event.target.closest(".list"));
-  }
-  if (event.target.classList.contains("list-individual-item")) {
-    lists.checkTask(event.target);
-  }
-  if (event.target.classList.contains("list-action-delete")) {
-    lists.deleteList(event.target.closest(".list"));
+  if ($("#task-input-TEMP") !== null) {
+    lists.setTask();
   }
   if ($("#title-input-TEMP") !== null) {
     lists.setTitle();
+  }
+  if (event.target.classList.contains("list-action-urgent")) {
+    lists.markUrgent(event.target.closest(".list"));
+  }
+  if (event.target.parentNode.classList.contains("list-individual-item")) {
+    if (event.target.tagName === "IMG")
+      lists.checkTask(event.target.closest(".list-individual-item"));
+    if (event.target.tagName === "P")
+      lists.editTask(event.target);
+  }
+  if (event.target.classList.contains("list-action-delete")) {
+    lists.deleteList(event.target.closest(".list"));
   }
   if (event.target.classList.contains("list-title")) {
     lists.editTitle(event.target);
@@ -241,7 +265,8 @@ lists.container.addEventListener('keyup', function(event) {
   event.preventDefault();
 
   if (event.keyCode === 13) {
-    lists.setTitle();
+    if ($("#title-input-TEMP") !== null) lists.setTitle();
+    if ($("#task-input-TEMP") !== null) lists.setTask();
   }
 });
 

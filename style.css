@@ -199,13 +199,16 @@ aside button.add-task {
   margin: 15px 0;
 }
 
-.list-individual-item * {
-  pointer-events: none;
+.list-individual-item p {
+  margin-left: 25px;
 }
 
-/* .list-individual-item:hover img {
-  content: url(assets/checkbox-active.svg);
-} */
+.list-individual-item input {
+  font-size: 1rem;
+  border: none;
+  background: transparent;
+  outline: none;
+}
 
 .list-individual-item.checked {
   color: #3C6577;
