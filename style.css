@@ -195,7 +195,7 @@ aside button.add-task {
   margin-right: 10px;
 }
 
-.list-items input {
+.list-items>input {
   width: 80%;
   margin: 0 0 10px 30px;
   background-color: #f9fdff;
