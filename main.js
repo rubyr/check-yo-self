@@ -145,6 +145,7 @@ var lists = {
     var input = $("#task-input-TEMP");
     input.value = taskName;
     input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
   },
 
   setTask() {
@@ -220,12 +221,11 @@ var filter = {
     this.title = (this.search.value !== "");
     if (this.urgent) {
       this.sortUrgent();
-    } else if (!this.title) {
-      this.showAll();
     }
     if (this.title) {
       this.sortTitle();
-    } else if (!this.urgent) {
+    }
+    if (!this.title && !this.urgent) {
       this.showAll();
     }
   }
@@ -259,13 +259,15 @@ aside.addEventListener('keyup', function(event) {
 
 lists.container.addEventListener('click', function(event) {
   if ($("#task-input-TEMP") !== null) {
-    lists.setTask();
+    if (event.target !== $("#task-input-TEMP"))
+      lists.setTask();
   }
   if ($("#title-input-TEMP") !== null) {
     lists.setTitle();
   }
   if (event.target.classList.contains("list-action-urgent")) {
     lists.markUrgent(event.target.closest(".list"));
+    filter.filterCards();
   }
   if (event.target.parentNode.classList.contains("list-individual-item")) {
     if (event.target.tagName === "IMG")
