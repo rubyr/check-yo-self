@@ -70,6 +70,14 @@ aside section:not(.new-list-task) {
   align-items: center;
 }
 
+aside section.form {
+  border-top: none;
+}
+
+.form label, .new-list-task {
+  margin: 0;
+}
+
 aside button {
   background: #1f1f3d;
   border: none;
