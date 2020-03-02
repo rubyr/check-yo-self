@@ -50,7 +50,6 @@ var form = {
 };
 var lists = {
   container: $(".lists"),
-  urgentMessage: $("#urgent-message"),
   noListsMessage: $("#no-lists"),
   listCount: 0,
 
